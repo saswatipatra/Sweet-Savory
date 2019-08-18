@@ -1,0 +1,29 @@
+@using System.Security.Claims
+@model IEnumerable<SweetSavory.Models.Treat>
+
+
+@{
+  Layout = "_Layout";
+}
+
+@using SweetSavory.Models;
+
+
+<h1>Here is your lists of tasks, @User.Identity.Name</h1>
+<hr/>
+
+@if (Model.Any())
+{
+  <ul>
+   @foreach (Treat treat in Model)
+{
+  <li>@Html.ActionLink($"{treat.TreatType}", "Details", new { id = treat.TreatId})</li>
+}
+</ul>
+} 
+else
+{
+<h3>No Treats have been added yet!</h3>
+}
+
+<p>@Html.ActionLink("Add new Treat", "Create")</p>

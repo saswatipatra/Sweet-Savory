@@ -1,0 +1,17 @@
+@{
+  Layout = "_Layout";
+}
+
+@model SweetSavory.Models.Flavor
+<h4>Add a new Flavor</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.FlavorType)
+    @Html.TextBoxFor(model => model.FlavorType)
+    <input type="submit" value="Add new task"/>
+  
+    
+}
+
+<p>@Html.ActionLink("Show all items", "Index")</p>
