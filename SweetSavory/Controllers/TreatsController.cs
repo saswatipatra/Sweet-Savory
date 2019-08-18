@@ -32,7 +32,7 @@ namespace SweetSavory.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
+            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "FlavorType");
             return View();
         }
 
@@ -61,26 +61,7 @@ namespace SweetSavory.Controllers
             return View(thisTreat);
         }
 
-        public ActionResult Edit(int id)
-        {
-            var thisTreat = _db.Treats.FirstOrDefault(Treats => Treats.TreatId == id);
-            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
-            return View(thisTreat);
-        }
-
-        [HttpPost]
-        public ActionResult Edit (Treat Treat, int FlavorId)
-        {
-            if (FlavorId !=0)
-            {
-                _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = Treat.TreatId});
-            }
-            _db.Entry(Treat).State = EntityState.Modified;
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Delete(int id)
+                public ActionResult Delete(int id)
         {
             var thisTreat = _db.Treats.FirstOrDefault(Treats => Treats.TreatId == id);
             return View(thisTreat);

@@ -41,20 +41,6 @@ namespace SweetSavory.Controllers
             return View(thisFlavor);
         }
 
-        public ActionResult Edit(int id)
-        {
-            var thisFlavor = _db.Flavors.FirstOrDefault(flavors => flavors.FlavorId == id);
-            return View(thisFlavor);
-        }
-
-        [HttpPost]
-        public ActionResult Edit (Flavor flavor)
-        {
-            _db.Entry(flavor).State = EntityState.Modified;
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         public ActionResult Delete(int id)
         {
             var thisFlavor = _db.Flavors.FirstOrDefault(flavors => flavors.FlavorId == id);

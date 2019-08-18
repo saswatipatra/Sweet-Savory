@@ -4,11 +4,6 @@ namespace SweetSavory.ViewModels
 {
     public class RegisterViewModel
     {
-       [Required]
-        // [UserName]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
