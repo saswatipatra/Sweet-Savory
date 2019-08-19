@@ -14,7 +14,7 @@ namespace SweetSavory.Models
         public int TreatId { get; set; }
         public string TreatType { get; set; }
         public string Description { get; set; }
-        public bool Recivied { get; set; }
+        
         public DateTime DeliveryDate { get; set; }
 
         public ICollection<FlavorTreat> Flavors { get; }
@@ -22,8 +22,7 @@ namespace SweetSavory.Models
 
          public Treat()
         {
-            this.Flavors = new HashSet<FlavorTreat>();
-            this.Recivied = false;
+            this.Flavors = new HashSet<FlavorTreat>();  
         }
     }
 }
