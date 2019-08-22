@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SweetSavory.Models;
 using System.Threading.Tasks;
 using SweetSavory.ViewModels;
@@ -19,11 +19,6 @@ namespace SweetSavory.Controllers
             _db = db;
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Register()
         {
             return View();
@@ -32,17 +27,27 @@ namespace SweetSavory.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            var user = new ApplicationUser { UserName = model.Email };
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+            if (model.Password == model.ConfirmPassword)
             {
-                return RedirectToAction("Index");
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Registration Unsuccessful. A password must include at least six characters, a capital letter, a number, and a special character. If your password meets these requirements, try registering with a different username.";
+                    return View();
+                }
             }
             else
             {
+                ViewBag.ErrorMessage = "Passwords do not match.";
                 return View();
             }
         }
+
         public ActionResult Login()
         {
             return View();
@@ -51,22 +56,23 @@ namespace SweetSavory.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
-
+            Microsoft.AspNetCore.Identity.SignInResult result = await
+            _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
                 return View();
             }
         }
+
         [HttpPost]
         public async Task<ActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

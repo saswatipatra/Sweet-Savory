@@ -4,10 +4,28 @@
 
 <div class="container">
     <div class="card">
-        <h1>Welcome to the To Do List!</h1>
-        <p>@Html.ActionLink("Log in", "Login", "Account")</p>
-         <p>@Html.ActionLink("Log out", "Logout", "Account")</p>
-        <p>@Html.ActionLink("Home", "Index", "Home")</p>
-        <p>@Html.ActionLink("Create an account", "Index", "Account")</p>
+        <h1>Welcome to the Pierre's Sweet and Savory Treats!</h1>
+
+        <hr/>
+            @if(User.Identity.IsAuthenticated)
+            {
+                <p>Hello @User.Identity.Name!</p>
+
+                <p>@Html.ActionLink("Show all Treats", "Index","Treats")</p>
+                @using (Html.BeginForm("LogOff", "Account"))
+                {
+                    <input type="submit"class="btn btn-default" value="Log out" />
+                }
+            }
+            else
+            {
+            <p>@Html.ActionLink("Log in", "Login", "Account")</p>
+            <p>@Html.ActionLink("Log out", "Logout", "Account")</p>
+            <p>@Html.ActionLink("Home", "Index", "Home")</p>
+            <p>@Html.ActionLink("Create an account", "Register", "Account")</p>
+
+            }
+
+        
     </div>
 </div>

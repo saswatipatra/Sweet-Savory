@@ -20,14 +20,13 @@
   <li>@Html.ActionLink($"{treat.TreatType}", "Details", new { id = treat.TreatId})</li>
 }
 </ul>
+<p>@Html.ActionLink("Add new Flavor", "Create","Flavors")</p>
+<p>@Html.ActionLink("Add new Treat", "Create")</p>
 } 
 else
 {
 <h3>No Treats have been added yet!</h3>
 <p>@Html.ActionLink("Add new Flavor", "Create", "Flavors")</p>
 }
-
-<p>@Html.ActionLink("Add new Treat", "Create")</p>
-<p>@Html.ActionLink("Add new Flavor", "Create","Flavors")</p>
- <p>@Html.ActionLink("Home", "Index", "Home")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
 
