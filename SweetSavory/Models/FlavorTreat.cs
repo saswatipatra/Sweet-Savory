@@ -5,7 +5,7 @@ namespace SweetSavory.Models
         public int FlavorTreatId { get; set; }
         public int TreatId { get; set; }
         public int FlavorId { get; set; }
-        public Treat Treat { get; set; }
-        public Flavor Flavor { get; set; }
+        public virtual Treat Treat { get; set; }
+        public virtual Flavor Flavor { get; set; }
     }
 }

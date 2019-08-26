@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using SweetSavory.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +35,7 @@ namespace SweetSavory.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(Treat treat, int FlavorId)
         {
@@ -61,12 +61,47 @@ namespace SweetSavory.Controllers
             return View(thisTreat);
         }
 
-                public ActionResult Delete(int id)
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Name");
+            var thisTreat = _db.Treats
+                .Include(treat => treat.Flavors)
+                .ThenInclude(join => join.Flavor)
+                .FirstOrDefault(treats => treats.TreatId == id);
+            return View(thisTreat);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Edit(Treat treat, int FlavorId)
+        {
+            _db.Entry(treat).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Edit", new { id = treat.TreatId });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddFlavor(Treat treat, int FlavorId)
+        {
+            if (FlavorId != 0)
+            {
+                _db.FlavorTreat.Add(new FlavorTreat() { FlavorId = FlavorId, TreatId = treat.TreatId });
+            }
+            _db.Entry(treat).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Edit", new { id = treat.TreatId });
+        }
+
+        [Authorize]
+        public ActionResult Delete(int id)
         {
             var thisTreat = _db.Treats.FirstOrDefault(Treats => Treats.TreatId == id);
             return View(thisTreat);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -76,6 +111,7 @@ namespace SweetSavory.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult DeleteFlavor(int joinId)
         {
