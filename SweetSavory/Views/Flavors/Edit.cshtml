@@ -1,0 +1,22 @@
+@model SweetSavory.Models.Flavor
+
+@{
+  Layout = "_Layout";
+}
+
+<h1>Edit Flavor: @Html.DisplayFor(model => model.FlavorType)</h1>
+<hr>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.FlavorId)
+
+    <div class="form-group">
+        <label for="FlavorType">FlavorType</label>
+        <input name="FlavorType" type="text" class="form-control" value="@Model.FlavorType" required>
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-primary"/>
+}
+<hr>
+<p>@Html.ActionLink("Delete Flavor", "Delete", new { id = Model.FlavorId })</p>
+<p>@Html.ActionLink("Cancel", "Details", new { id = Model.FlavorId })</p>

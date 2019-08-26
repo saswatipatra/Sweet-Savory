@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SweetSavory.Migrations
 {
-    public partial class addInitial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,19 +45,6 @@ namespace SweetSavory.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Flavors",
-                columns: table => new
-                {
-                    FlavorId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FlavorType = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Flavors", x => x.FlavorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,6 +154,26 @@ namespace SweetSavory.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Flavors",
+                columns: table => new
+                {
+                    FlavorId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FlavorType = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flavors", x => x.FlavorId);
+                    table.ForeignKey(
+                        name: "FK_Flavors_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Treats",
                 columns: table => new
                 {
@@ -174,7 +181,6 @@ namespace SweetSavory.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TreatType = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Recivied = table.Column<bool>(nullable: false),
                     DeliveryDate = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -251,6 +257,11 @@ namespace SweetSavory.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flavors_UserId",
+                table: "Flavors",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FlavorTreat_FlavorId",

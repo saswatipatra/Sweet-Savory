@@ -1,0 +1,50 @@
+@model SweetSavory.Models.Treat
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Edit Treat: @Html.DisplayFor(model => model.TreatType)</h1>
+<hr>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.TreatId)
+
+    <div class="form-group">
+        <label for="TreatType">TreatType</label>
+        <input name="TreatType" type="text" class="form-control" value="@Model.TreatType" required>
+    </div>
+    <div class="form-group">
+        <label for="Description ">Description  ($)</label>
+        <input name="Description " type="text" class="form-control" value="@Model.Description " required>
+    </div>
+    <div class="form-group">
+        <label for="DeliveryDate  ">DeliveryDate   ($)</label>
+        <input name="DeliveryDate  " type="Date" class="form-control" value="@Model.DeliveryDate  " required>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Save" />
+}
+<hr>
+<h4>Current Flavors for @Model.TreatType:</h4>
+@if (Model.Flavors.Any())
+{
+    <ul>
+        @foreach (var join in Model.Flavors)
+        {
+            <li>
+                @using (Html.BeginForm("DeleteFlavor", "Treats", new { treatId = Model.TreatId }))
+                {
+                    @join.Flavor.FlavorType
+                    @Html.Hidden("joinId", @join.FlavorTreatId)
+                    <input type="submit" value="Remove"/>
+                }
+            </li>
+        }
+    </ul>
+}
+   <input type="submit" class="btn btn-primary" value="Add" />
+}
+<hr>
+<p>@Html.ActionLink("Delete Treat", "Delete", new { id = Model.TreatId })</p>
+@Html.ActionLink("← Back", "Details", new { id = Model.TreatId })

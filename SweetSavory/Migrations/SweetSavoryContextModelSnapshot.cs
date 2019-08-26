@@ -181,7 +181,11 @@ namespace SweetSavory.Migrations
 
                     b.Property<string>("FlavorType");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("FlavorId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Flavors");
                 });
@@ -212,8 +216,6 @@ namespace SweetSavory.Migrations
                     b.Property<DateTime>("DeliveryDate");
 
                     b.Property<string>("Description");
-
-                    b.Property<bool>("Recivied");
 
                     b.Property<string>("TreatType");
 
@@ -269,6 +271,13 @@ namespace SweetSavory.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SweetSavory.Models.Flavor", b =>
+                {
+                    b.HasOne("SweetSavory.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SweetSavory.Models.FlavorTreat", b =>
